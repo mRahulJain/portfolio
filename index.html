@@ -28,44 +28,22 @@
     <link rel="shortcut icon" href="img/logo-big.png">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
-    <script type="text/javascript">
-    	function openInbox() {
-    		var firstName = document.getElementById("firstName").value;
-    		var lastName = document.getElementById("lastName").value;
-    		var subject = document.getElementById("subject").value;
-    		var phoneNumber = document.getElementById("phoneNumber").value;
-    		var onlyMessage = document.getElementById("myMessage").value;
-    		var message = document.getElementById("myMessage").value + "(Name - "+firstName+" "+lastName+")";
 
-    		if(firstName == "" || lastName == "" || subject == "" || onlyMessage == "") {
+    <style type="text/css">
 
-    		} else {
-
-    			if(phoneNumber != "") {
-    				message = message + " (Phone Number -"+phoneNumber+")";
-    			}
-    			window.open('mailto:'+'rj.jain.me@gmail.com'+'?cc='+""+'&subject='+subject+'&body='+message, '_self');
-    		}
-    	}
-
-    	function startWriting() {
-    		var i = 0;
-			var txt1 = 'I am an Android App Developer.';
-			var txt2 = 'I am an enthusiast Kotlin/Java Programmer.';
-			var txt3 = 'I am a Kotlin/Android Full Stack Android Developer';
-			var speed = 50;
-
-			while(true) {
-				while(i<txt1.length) {
-					document.getElementById("myText").innerHTML += txt1.charAt(i);
-					i++;
-					setTimeout(startWriting, speed);
-				}
-				document.getElementById("myText").innerHTML = "";
-			}
-    	}
-    </script>
-
+    	#myNameText::after {
+		  content:'';
+		  display:inline-block;
+		  margin-left:3px;
+		  background-color:white;
+		  animation-duration:0.5s;
+		  animation-iteration-count: infinite;
+		  white-space: nowrap;
+		  overflow: hidden;    
+		  margin: 0 auto;
+		}
+	}
+    </style>
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -92,10 +70,10 @@
     </header>
     <!-- Intro Image-->
     <section id="intro" style="background: url(img/home.jpg) center center no-repeat; background-size: cover;" class="intro-section pb-2">
-      <div class="container text-center">
+      <div id="output" class="container text-center output">
         <div data-animate="fadeInDown" class="logo"><img id="corner-radius" src="img/about.jpg" alt="logo" width="180"></div>
         <h1 data-animate="fadeInDown" class="text-shadow mb-5">Hello, नमस्ते !</h1>
-        <p data-animate="slideInUp" class="h3 text-shadow text-400">I am an Android App Developer.</p>
+        <p class="h3 text-shadow text-400" id="myNameText"></p>
       </div>
     </section>
     <!-- About-->
@@ -400,5 +378,92 @@
     <script src="vendor/jquery.counterup/jquery.counterup.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"> </script>
     <script src="js/front.js"></script>
+
+    <script type="text/javascript">
+    	function openInbox() {
+    		var firstName = document.getElementById("firstName").value;
+    		var lastName = document.getElementById("lastName").value;
+    		var subject = document.getElementById("subject").value;
+    		var phoneNumber = document.getElementById("phoneNumber").value;
+    		var onlyMessage = document.getElementById("myMessage").value;
+    		var message = document.getElementById("myMessage").value + "(Name - "+firstName+" "+lastName+")";
+
+    		if(firstName == "" || lastName == "" || subject == "" || onlyMessage == "") {
+
+    		} else {
+
+    			if(phoneNumber != "") {
+    				message = message + " (Phone Number -"+phoneNumber+")";
+    			}
+    			window.open('mailto:'+'rj.jain.me@gmail.com'+'?cc='+""+'&subject='+subject+'&body='+message, '_self');
+    		}
+    	}
+
+	    var i = 0,
+	    	a = 0,
+	    	isBackspacing = false;
+
+	// Typerwrite text content. Use a pipe to indicate the start of the second line "|".  
+	var textArray = [
+	  "I'm, Rahul Jain.", 
+	  "I'm an Android App Developer.", 
+	  "I'm a Kotlin Full Stack Developer."
+	];
+
+	// Speed (in milliseconds) of typing.
+	var speedForward = 100, //Typing Speed
+		speedWait = 1000, // Wait between typing and backspacing
+		speedBackspace = 25; //Backspace Speed
+
+	//Run the loop
+	typeWriter("output", textArray);
+
+	function typeWriter(id, ar) {
+	  var aString = ar[a],
+	      eParagraph = document.getElementById("myNameText");
+	  
+	  // Determine if animation should be typing or backspacing
+	  if (!isBackspacing) {
+	    
+	    // If full string hasn't yet been typed out, continue typing
+	    if (i < aString.length) {
+	      
+	      // If character about to be typed is a pipe, switch to second line and continue.
+	      	eParagraph.innerHTML = eParagraph.innerHTML + aString.charAt(i);
+	        i++;
+	        setTimeout(function(){ typeWriter(id, ar); }, speedForward);
+	      
+	    // If full string has been typed, switch to backspace mode.
+	    } else if (i == aString.length) {
+	      
+	      isBackspacing = true;
+	      setTimeout(function(){ typeWriter(id, ar); }, speedWait);
+	      
+	    }
+	    
+	  // If backspacing is enabled
+	  } else {
+	    
+	    // If either the header or the paragraph still has text, continue backspacing
+	    if (eParagraph.innerHTML.length > 0) {
+	      
+	      // If paragraph still has text, continue erasing, otherwise switch to the header.
+	      if (eParagraph.innerHTML.length > 0) {
+	        eParagraph.innerHTML = eParagraph.innerHTML.substring(0, eParagraph.innerHTML.length - 1);
+	      }
+	      setTimeout(function(){ typeWriter(id, ar); }, speedBackspace);
+	    
+	    // If neither head or paragraph still has text, switch to next quote in array and start typing.
+	    } else { 
+	      
+	      isBackspacing = false;
+	      i = 0;
+	      a = (a + 1) % ar.length; //Moves to next position in array, always looping back to 0
+	      setTimeout(function(){ typeWriter(id, ar); }, 50);
+	      
+	    }
+	  }
+	}
+    </script>
   </body>
 </html>
