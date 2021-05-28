@@ -457,7 +457,7 @@ nav.navbar a.nav-link.active, nav.navbar a.nav-link:hover {
 }
 
 .reference {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   overflow: hidden;
 }
 
@@ -465,7 +465,7 @@ nav.navbar a.nav-link.active, nav.navbar a.nav-link:hover {
   .reference {
     max-width: 350px;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
 }
 
